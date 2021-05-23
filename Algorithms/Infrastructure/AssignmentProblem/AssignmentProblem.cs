@@ -4,7 +4,9 @@ using System.Text;
 
 namespace Infrastructure
 {
-
+	/// <summary>
+	/// Class which represents linear programming assignment problem with corresponding constraints 
+	/// </summary>
 	public abstract class AssignmentProblem : IResolvable
 	{
 

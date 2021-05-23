@@ -5,6 +5,9 @@ using System.Text.Json.Serialization;
 
 namespace Infrastructure
 {
+	/// <summary>
+	/// Data transfer object for reading tasks from files
+	/// </summary>
 	public struct AssignmentProblemDTO
 	{
 		[JsonPropertyName("MatrixC")]

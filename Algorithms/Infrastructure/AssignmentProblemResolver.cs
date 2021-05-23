@@ -2,7 +2,9 @@
 
 namespace Infrastructure
 {
-
+	/// <summary>
+	/// Class aggregator for algorithm, task & result
+	/// </summary>
 	public class AssignmentProblemResolver
 	{
 

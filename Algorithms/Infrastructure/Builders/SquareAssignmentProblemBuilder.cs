@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace Infrastructure
 {
+	/// <summary>
+	/// Class builder for SquareAssignmentProblem
+	/// </summary>
+	/// <remarks>Implementation of fabrik pattern</remarks>
 	public class SquareAssignmentProblemBuilder : AssignmentProblemBuilder
 	{
 
@@ -15,9 +19,17 @@ namespace Infrastructure
 			return new SquareAssignmentProblem(matrixC: matrixC, matrixT: matrixT);
 		}
 
+		/// <summary>
+		/// Reads task from file
+		/// </summary>
+		/// <param name="Path"></param>
+		/// <exception cref="FileNotFoundException"></exception>
+		/// <returns></returns>
 		public async override Task<AssignmentProblem> CreateAsync(string Path)
 		{
 			AssignmentProblemDTO restoredProb;
+
+			if (File.Exists(Path)) throw new FileNotFoundException();
 			using (FileStream fs = new FileStream(Path, FileMode.OpenOrCreate))
 			{
 				restoredProb = await JsonSerializer.DeserializeAsync<AssignmentProblemDTO>(fs);

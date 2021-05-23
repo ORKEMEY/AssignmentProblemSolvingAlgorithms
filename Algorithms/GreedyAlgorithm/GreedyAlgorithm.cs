@@ -3,9 +3,12 @@ using Infrastructure;
 
 namespace GreedyAlgorithm
 {
-	public class GreedyAlgorithm : IAssignmentProblemSolvingAlgorithm<AssignmentProblem>
+	/// <summary>
+	/// Implementation of greedy algorithm
+	/// </summary>
+	public sealed class GreedyAlgorithm : IAssignmentProblemSolvingAlgorithm<AssignmentProblem>
 	{
-
+		
 		private double[,] matrixF;
 
 		public int[] Resolve(AssignmentProblem problem)
@@ -19,13 +22,11 @@ namespace GreedyAlgorithm
 				FindMax(matrixF, out int indexI, out int indexJ);
 				result[indexI] = indexJ;
 				CrossOutRowCol(indexI: indexI, indexJ: indexJ);
-
 			}
-
 			return result;
 		}
-
-		protected void CrossOutRowCol(int indexI, int indexJ)
+		//Deletion of rows and columns which cann't be used in search for best assignment
+		private void CrossOutRowCol(int indexI, int indexJ)
 		{
 
 			for (int row = 0; row < matrixF.GetLength(0); row++)
@@ -39,8 +40,8 @@ namespace GreedyAlgorithm
 			}
 
 		}
-
-		protected void FindMax(double[,] matrix, out int indexI, out int indexJ)
+		//Search for best assignment on current step
+		private void FindMax(double[,] matrix, out int indexI, out int indexJ)
 		{
 
 			double max = double.MinValue;
@@ -64,21 +65,8 @@ namespace GreedyAlgorithm
 
 		}
 
-		protected bool AreMatrixCompatible(IResolvable problem)
+		private void FillMatrixF(AssignmentProblem problem)
 		{
-
-			if (problem.MatrixC.GetLength(0) != problem.MatrixT.GetLength(0))
-				return false;
-
-			if (problem.MatrixC.GetLength(1) != problem.MatrixT.GetLength(1))
-				return false;
-			return true;
-		}
-
-		protected void FillMatrixF(IResolvable problem)
-		{
-
-			if(!AreMatrixCompatible(problem)) return;
 
 			matrixF = new double[
 				problem.MatrixC.GetLength(0), 
