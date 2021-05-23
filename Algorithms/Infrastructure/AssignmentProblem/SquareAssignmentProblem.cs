@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,24 +10,26 @@ namespace Infrastructure
 
 		public override int[,] MatrixC
 		{
-			get => _matrixC;
+			get => base.MatrixC;
 
 			protected set
 			{
-				if (value.GetLength(0) == value.GetLength(1)
-					& CheckConstraintsMatrixC(value))
-					_matrixC = value;
+				if (value.GetLength(0) != value.GetLength(1))
+					throw new ArgumentException("Matrix isn't square", nameof(MatrixC));
+
+				base.MatrixC = value;
 			}
 		}
 		public override int[,] MatrixT
 		{
-			get => _matrixT;
+			get => base.MatrixT;
 
 			protected set
 			{
-				if (value.GetLength(0) == value.GetLength(1)
-					& CheckConstraintsMatrixT(value))
-					_matrixT = value;
+				if (value.GetLength(0) != value.GetLength(1))
+					throw new ArgumentException("Matrix isn't square", nameof(MatrixT));
+
+				base.MatrixT = value;
 			}
 		}
 
