@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace Infrastructure
 {
-	public abstract class AssignmentProblemBuilder
+	public abstract class AssignmentProblemBuilder<T> where T : AssignmentProblem
 	{
 
-		public abstract AssignmentProblem Create(int[,] matrixC, int[,] matrixT);
-		public abstract Task<AssignmentProblem> CreateAsync(string Path);
+		public abstract T Create(int[,] matrixC, int[,] matrixT);
+		public abstract Task<T> CreateAsync(string Path);
 
 	}
 }

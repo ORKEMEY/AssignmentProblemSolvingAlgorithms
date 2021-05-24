@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Infrastructure
 {
-	public class SquareAssignmentProblemBuilder : AssignmentProblemBuilder
+	public class SquareAssignmentProblemBuilder : AssignmentProblemBuilder<SquareAssignmentProblem>
 	{
 
-		public override AssignmentProblem Create(int[,] matrixC, int[,] matrixT)
+		public override SquareAssignmentProblem Create(int[,] matrixC, int[,] matrixT)
 		{
 			return new SquareAssignmentProblem(matrixC: matrixC, matrixT: matrixT);
 		}
 
-		public async override Task<AssignmentProblem> CreateAsync(string Path)
+		public async override Task<SquareAssignmentProblem> CreateAsync(string Path)
 		{
 			AssignmentProblemDTO restoredProb;
 			using (FileStream fs = new FileStream(Path, FileMode.OpenOrCreate))

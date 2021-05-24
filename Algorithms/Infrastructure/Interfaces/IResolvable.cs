@@ -7,11 +7,11 @@ namespace Infrastructure
 	public interface IResolvable
 	{
 
-		public int[,] MatrixC { get; }
-		public int[,] MatrixT { get; }
+		int[,] MatrixC { get; }
+		int[,] MatrixT { get; }
 
-		public bool CheckConstraintsMatrixC(int[,] matrix);
-		public bool CheckConstraintsMatrixT(int[,] matrix);
+		bool CheckConstraintsMatrixC(int[,] matrix);
+		bool CheckConstraintsMatrixT(int[,] matrix);
 
 	}
 }
