@@ -5,14 +5,15 @@ namespace Infrastructure
 	/// <summary>
 	/// Class aggregator for algorithm, task & result
 	/// </summary>
-	public class AssignmentProblemResolver
+	 
+	public class AssignmentProblemResolver<T> where T : AssignmentProblem
 	{
 
-		public readonly IAssignmentProblemSolvingAlgorithm<AssignmentProblem> Algorythm;
-		public readonly AssignmentProblem Problem;
+		public readonly IAssignmentProblemSolvingAlgorithm<T> Algorythm;
+		public readonly T Problem;
 		public int[] Result { get; protected set; }
 
-		public AssignmentProblemResolver(IAssignmentProblemSolvingAlgorithm<AssignmentProblem> algorythm, AssignmentProblem problem)
+		public AssignmentProblemResolver(IAssignmentProblemSolvingAlgorithm<T> algorythm, T problem)
 		{
 			this.Algorythm = algorythm;
 			this.Problem = problem;

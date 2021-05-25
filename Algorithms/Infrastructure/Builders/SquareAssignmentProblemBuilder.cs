@@ -10,11 +10,11 @@ namespace Infrastructure
 	/// <summary>
 	/// Class builder for SquareAssignmentProblem
 	/// </summary>
-	/// <remarks>Implementation of fabrik pattern</remarks>
-	public class SquareAssignmentProblemBuilder : AssignmentProblemBuilder
+	/// <remarks>Implementation of factory pattern</remarks>
+	public class SquareAssignmentProblemBuilder : AssignmentProblemBuilder<SquareAssignmentProblem>
 	{
 
-		public override AssignmentProblem Create(int[,] matrixC, int[,] matrixT)
+		public override SquareAssignmentProblem Create(int[,] matrixC, int[,] matrixT)
 		{
 			return new SquareAssignmentProblem(matrixC: matrixC, matrixT: matrixT);
 		}
@@ -25,11 +25,11 @@ namespace Infrastructure
 		/// <param name="Path"></param>
 		/// <exception cref="FileNotFoundException"></exception>
 		/// <returns></returns>
-		public async override Task<AssignmentProblem> CreateAsync(string Path)
+		public async override Task<SquareAssignmentProblem> CreateAsync(string Path)
 		{
 			AssignmentProblemDTO restoredProb;
 
-			if (File.Exists(Path)) throw new FileNotFoundException();
+			if (!File.Exists(Path)) throw new FileNotFoundException();
 			using (FileStream fs = new FileStream(Path, FileMode.OpenOrCreate))
 			{
 				restoredProb = await JsonSerializer.DeserializeAsync<AssignmentProblemDTO>(fs);

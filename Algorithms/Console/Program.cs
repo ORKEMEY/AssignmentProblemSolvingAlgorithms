@@ -18,13 +18,14 @@ namespace Console
 			//create algorithm obj
 			var alg = new GreedyAlgorithm.GreedyAlgorithm();
 			// create aggregator class
-			var res = new AssignmentProblemResolver(alg, prob);
+			var res = new AssignmentProblemResolver<SquareAssignmentProblem>(alg, prob);
 			//start algirithm
 			res.Resolve();
 			//output result
 			System.Console.WriteLine(res.ToString());
 
 			System.Console.ReadKey();
+		
 		}
 
 	}
