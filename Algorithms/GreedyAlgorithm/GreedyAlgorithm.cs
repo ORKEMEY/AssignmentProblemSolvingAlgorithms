@@ -6,10 +6,8 @@ namespace GreedyAlgorithm
 	/// <summary>
 	/// Implementation of greedy algorithm
 	/// </summary>
-	public sealed class GreedyAlgorithm : IAssignmentProblemSolvingAlgorithm<AssignmentProblem>
+	public sealed class GreedyAlgorithm : CompositeMatrixFiller<AssignmentProblem>, IAssignmentProblemSolvingAlgorithm<AssignmentProblem>
 	{
-		
-		private double[,] matrixF;
 
 		public int[] Resolve(AssignmentProblem problem)
 		{
@@ -61,23 +59,6 @@ namespace GreedyAlgorithm
 
 				}
 
-			}
-
-		}
-
-		private void FillMatrixF(AssignmentProblem problem)
-		{
-
-			matrixF = new double[
-				problem.MatrixC.GetLength(0), 
-				problem.MatrixC.GetLength(1)];
-
-			for(int row  = 0; row < problem.MatrixC.GetLength(0); row++)
-			{
-				for (int col = 0; col < problem.MatrixC.GetLength(1); col++)
-				{
-					matrixF[row, col] = (double)problem.MatrixC[row, col] / problem.MatrixT[row, col];
-				}
 			}
 
 		}

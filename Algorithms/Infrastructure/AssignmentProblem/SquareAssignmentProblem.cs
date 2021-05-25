@@ -9,7 +9,7 @@ namespace Infrastructure
 	/// <remarks>Assignment problem with additional constraints on squareness of matrix</remarks>>
 	public class SquareAssignmentProblem : AssignmentProblem
 	{
-			
+		public int Size => MatrixT.GetLength(0); 
 		public override int[,] MatrixC
 		{
 			get => base.MatrixC;
