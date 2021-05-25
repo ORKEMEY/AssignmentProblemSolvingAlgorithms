@@ -23,8 +23,9 @@ namespace Infrastructure
 
 		public override string ToString()
 		{
-			string str = String.Empty;
+			if (Result == null) return null;
 
+			string str = String.Empty;
 			foreach(var i in Result)
 			{
 				str += (i + 1).ToString() + " ";

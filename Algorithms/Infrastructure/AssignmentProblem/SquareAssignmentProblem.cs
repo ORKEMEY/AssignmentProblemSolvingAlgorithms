@@ -7,7 +7,7 @@ namespace Infrastructure
 {
 	public class SquareAssignmentProblem : AssignmentProblem
 	{
-
+		public int Size => MatrixT.GetLength(0); 
 		public override int[,] MatrixC
 		{
 			get => base.MatrixC;
