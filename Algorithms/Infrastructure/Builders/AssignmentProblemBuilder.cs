@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure
 {
+	/// <summary>
+	/// Class builder for AssignmentProblem
+	/// </summary>
 	public abstract class AssignmentProblemBuilder<T> where T : AssignmentProblem
 	{
 

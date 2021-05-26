@@ -8,6 +8,10 @@ using Infrastructure.Extensions;
 
 namespace Infrastructure
 {
+	/// <summary>
+	/// Class builder for SquareAssignmentProblem
+	/// </summary>
+	/// <remarks>Implementation of factory pattern</remarks>
 	public class SquareAssignmentProblemBuilder : AssignmentProblemBuilder<SquareAssignmentProblem>
 	{
 

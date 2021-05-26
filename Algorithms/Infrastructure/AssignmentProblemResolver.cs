@@ -3,6 +3,9 @@ using Infrastructure.Extensions;
 
 namespace Infrastructure
 {
+	/// <summary>
+	/// Class aggregator for algorithm, task & result
+	/// </summary>
 	 
 	public class AssignmentProblemResolver<T> where T : AssignmentProblem
 	{

@@ -6,6 +6,9 @@ using Infrastructure.Extensions;
 
 namespace Infrastructure
 {
+	/// <summary>
+	/// Data transfer object for reading tasks from files
+	/// </summary>
 	public struct AssignmentProblemDTO
 	{
 		[JsonPropertyName("MatrixC")]

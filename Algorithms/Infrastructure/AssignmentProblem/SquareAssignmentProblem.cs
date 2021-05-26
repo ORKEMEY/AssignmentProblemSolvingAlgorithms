@@ -5,6 +5,8 @@ using System.Text;
 
 namespace Infrastructure
 {
+	/// <inheritdoc/>
+	/// <remarks>Assignment problem with additional constraints on squareness of matrix</remarks>>
 	public class SquareAssignmentProblem : AssignmentProblem
 	{
 		public int Size => MatrixT.GetLength(0); 
