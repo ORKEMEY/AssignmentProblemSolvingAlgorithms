@@ -85,7 +85,7 @@ namespace HungarianAlgorithm
 		private double[,] matrixC;
 		private double[,] matrixT;
 
-		private List<ObjectiveValues> _objectives = new List<ObjectiveValues>();
+		private readonly List<ObjectiveValues> _objectives = new List<ObjectiveValues>();
 
 
 		public override int[] Resolve(SquareAssignmentProblem problem)
@@ -241,18 +241,6 @@ namespace HungarianAlgorithm
 			var objectiveValue = Solve(result);
 
 			return objectiveValue;
-		}
-
-		private double CalculateObjective(double[,] matrix, int[] assignment)
-		{
-			double result = 0;
-
-			for(int count = 0; count < assignment.Length; count++)
-			{
-				result += matrix[count, assignment[count]];
-			}
-
-			return result;
 		}
 
 		private ObjectiveValues? EquitableCompromise()
