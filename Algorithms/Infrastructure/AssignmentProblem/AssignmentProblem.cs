@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Infrastructure.Extensions;
 
 namespace Infrastructure
 {
@@ -72,8 +73,17 @@ namespace Infrastructure
 
 			return true;
 		}
-	}
 
-	
+		public override string ToString()
+		{
+			string matrixStr = String.Empty;
+
+			matrixStr += $"Matrix C: \n{MatrixC.MatrixToString()}\n";
+			matrixStr += $"Matrix T: \n{MatrixT.MatrixToString()}\n";
+
+			return matrixStr;
+		}
+
+	}
 
 }
