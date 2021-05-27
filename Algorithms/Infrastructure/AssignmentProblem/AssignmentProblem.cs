@@ -45,6 +45,8 @@ namespace Infrastructure
 			this.MatrixT = matrixT;
 		}
 
+
+		public abstract double CalculateObjective(double[,] matrix, int[] assignment);
 		private bool AreMatrixCompatible(int[,] matrixC, int[,] matrixT)
 		{
 			if (matrixC.GetLength(0) != matrixT.GetLength(0))

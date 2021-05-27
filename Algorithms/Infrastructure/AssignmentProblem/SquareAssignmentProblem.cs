@@ -37,5 +37,16 @@ namespace Infrastructure
 		{
 		}
 
+		public override double CalculateObjective(double[,] matrix, int[] assignment)
+		{
+			double result = 0;
+
+			for (int count = 0; count < assignment.Length; count++)
+			{
+				result += matrix[count, assignment[count]];
+			}
+
+			return result;
+		}
 	}
 }

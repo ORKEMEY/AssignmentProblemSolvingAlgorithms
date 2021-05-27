@@ -28,8 +28,8 @@ namespace Infrastructure
 
 			if (Result == null) return;
 
-			ObjectiveValueByC = Algorythm.CalculateObjective(Problem.MatrixC.ToDouble(), Result);
-			ObjectiveValueByT = Algorythm.CalculateObjective(Problem.MatrixT.ToDouble(), Result);
+			ObjectiveValueByC = Problem.CalculateObjective(Problem.MatrixC.ToDouble(), Result);
+			ObjectiveValueByT = Problem.CalculateObjective(Problem.MatrixT.ToDouble(), Result);
 
 		}
 
