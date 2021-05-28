@@ -37,6 +37,16 @@ namespace Infrastructure
 			}
 		}
 
+		public double? MutationProbability { get; protected set; }
+		public int? GeneticAlgorithmsNumberOfIterations{ get; protected set; }
+
+		public AssignmentProblem(int[,] matrixC, int[,] matrixT, double mutationProbability, int geneticAlgorithmsNumberOfIterations) 
+			: this(matrixC, matrixT)
+		{
+			MutationProbability = mutationProbability;
+			GeneticAlgorithmsNumberOfIterations = geneticAlgorithmsNumberOfIterations;
+		}
+
 		public AssignmentProblem(int[,] matrixC, int[,] matrixT)
 		{
 			if (!AreMatrixCompatible(matrixC: matrixC, matrixT: matrixT))
