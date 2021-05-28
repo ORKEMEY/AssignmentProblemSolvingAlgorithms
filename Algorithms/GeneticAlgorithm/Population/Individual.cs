@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Infrastructure;
+using Infrastructure.Extensions;
 
 namespace GeneticAlgorithm
 {
@@ -24,6 +26,23 @@ namespace GeneticAlgorithm
 			for (int col = 0; col < size; col++)
 			{
 				this[col] = random.Next(0, size);
+			}
+			this.Reanimate();
+		}
+
+		public Individual(Individual firstParent, Individual secondParent)
+		{
+			genes = new int[firstParent.NumberOfGenes < secondParent.NumberOfGenes 
+				? firstParent.NumberOfGenes : secondParent.NumberOfGenes];
+
+			var random = new Random(DateTime.Now.Millisecond);
+
+			for (int col = 0; col < this.NumberOfGenes; col++)
+			{
+				int min = firstParent[col] < secondParent[col] ? firstParent[col] : secondParent[col];
+				int max = firstParent[col] > secondParent[col] ? firstParent[col] : secondParent[col];
+
+				this[col] = random.Next(min == 0 ? min : min - 1, max == NumberOfGenes -1 ? max : max + 1);
 			}
 			this.Reanimate();
 		}
@@ -85,6 +104,26 @@ namespace GeneticAlgorithm
 		public override int GetHashCode()
 		{
 			return base.GetHashCode();
+		}
+
+		public override string ToString()
+		{
+
+			string str = String.Empty;
+			foreach (var i in genes)
+			{
+				str += (i + 1).ToString() + " ";
+			}
+			return str;
+		}
+
+		public double CalcDistanceToPerfectPoint(PerfectPoint point, AssignmentProblem problem)
+		{
+			var distByC = problem.CalculateObjective(problem.MatrixC.ToDouble(), genes);
+			var distByT = problem.CalculateObjective(problem.MatrixT.ToDouble(), genes);
+			var curDist = point.CalcDistanceToPerfectPoint(coordinateC: distByC, coordinateT: distByT);
+
+			return curDist;
 		}
 	}
 }
