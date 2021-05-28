@@ -33,6 +33,11 @@ namespace Infrastructure
 			}
 		}
 
+		public SquareAssignmentProblem(int[,] matrixC, int[,] matrixT, double mutationProbability, int geneticAlgorithmsNumberOfIterations) 
+			: base(matrixC, matrixT, mutationProbability, geneticAlgorithmsNumberOfIterations)
+		{
+		}
+
 		public SquareAssignmentProblem(int[,] matrixC, int[,] matrixT) : base(matrixC, matrixT)
 		{
 		}
