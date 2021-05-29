@@ -96,6 +96,13 @@ namespace Infrastructure
 			return matrixStr;
 		}
 
+
+		public void SaveProblem(string path)
+		{
+			if (!path.EndsWith(".json")) path += ".json";
+			AssignmentProblemWriter.Write(path, this);
+		}
+
 	}
 
 }

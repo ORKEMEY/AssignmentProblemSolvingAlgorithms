@@ -9,7 +9,7 @@ namespace Infrastructure
 	{
 
 		public abstract T Create(int[,] matrixC, int[,] matrixT);
-		public abstract Task<T> CreateAsync(string Path);
+		//public abstract Task<T> CreateAsync(string Path);
 
 	}
 }
