@@ -11,12 +11,24 @@ namespace Infrastructure
 {
 	public static class ResultWriter
 	{
+
+		/// <exception cref="ArgumentException"/>
 		public static async void WriteAsync(string Path, ResultDTO result)
 		{
-			using (FileStream fs = new FileStream(Path, FileMode.Create))
+			FileStream fs = null;
+			try
 			{
-				await JsonSerializer.SerializeAsync(fs, 
+				fs = new FileStream(Path, FileMode.Create);
+				await JsonSerializer.SerializeAsync(fs,
 					new { result.ObjectiveValueByC, result.ObjectiveValueByT, result.Result });
+			}
+			catch (Exception e)
+			{
+				throw new ArgumentException(e.Message);
+			}
+			finally
+			{
+				fs?.Close();
 			}
 		}
 	}

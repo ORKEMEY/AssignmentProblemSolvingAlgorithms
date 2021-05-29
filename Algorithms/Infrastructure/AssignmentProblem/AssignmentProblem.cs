@@ -39,6 +39,16 @@ namespace Infrastructure
 			}
 		}
 
+		public double? MutationProbability { get; protected set; }
+		public int? GeneticAlgorithmsNumberOfIterations{ get; protected set; }
+
+		public AssignmentProblem(int[,] matrixC, int[,] matrixT, double mutationProbability, int geneticAlgorithmsNumberOfIterations) 
+			: this(matrixC, matrixT)
+		{
+			MutationProbability = mutationProbability;
+			GeneticAlgorithmsNumberOfIterations = geneticAlgorithmsNumberOfIterations;
+		}
+
 		public AssignmentProblem(int[,] matrixC, int[,] matrixT)
 		{
 			if (!AreMatrixCompatible(matrixC: matrixC, matrixT: matrixT))
@@ -47,6 +57,8 @@ namespace Infrastructure
 			this.MatrixT = matrixT;
 		}
 
+
+		public abstract double CalculateObjective(double[,] matrix, int[] assignment);
 		private bool AreMatrixCompatible(int[,] matrixC, int[,] matrixT)
 		{
 			if (matrixC.GetLength(0) != matrixT.GetLength(0))

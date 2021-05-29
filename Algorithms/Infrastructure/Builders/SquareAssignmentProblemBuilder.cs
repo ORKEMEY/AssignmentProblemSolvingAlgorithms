@@ -55,9 +55,17 @@ namespace Infrastructure
 			{
 				throw new ArgumentException(ex.Message, nameof(restoredProb.MatrixT));
 			}
+		
+			if(!restoredProb.MutationProbability.HasValue || !restoredProb.GeneticAlgorithmsNumberOfIterations.HasValue)
+			{
+				return new SquareAssignmentProblem(matrixC: matrixC, matrixT: matrixT);
+			}
+			else
+			{
+				return new SquareAssignmentProblem(matrixC: matrixC, matrixT: matrixT, 
+					restoredProb.MutationProbability.Value, restoredProb.GeneticAlgorithmsNumberOfIterations.Value);
+			}
 
-
-			return new SquareAssignmentProblem(matrixC: matrixC, matrixT: matrixT);
 		}
 
 	}

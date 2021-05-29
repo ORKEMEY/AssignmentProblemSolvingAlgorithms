@@ -48,15 +48,7 @@ namespace Console.Menu
 						break;
 
 					case 's':
-
-						System.Console.Write("Enter path to the output file\n>");
-						string path = System.Console.ReadLine();
-						if (path == null)
-						{
-							Alert(" < Empty path to the output file > ");
-							break;
-						}
-						currentResolver.SaveResult(path);
+						SaveResult();
 						break;
 
 					case 'm':		
@@ -76,6 +68,26 @@ namespace Console.Menu
 				}
 
 			} while (mode != 'q');
+		}
+
+		private void SaveResult()
+		{
+			System.Console.Write("Enter path to the output file\n>");
+			string path = System.Console.ReadLine();
+			if (path == null)
+			{
+				Alert(" < Empty path to the output file > ");
+				return;
+			}
+			try
+			{
+				currentResolver.SaveResult(path);
+				Info($"Result has been successfully saved: {Path.GetFullPath(path)}");
+			}
+			catch (ArgumentException e)
+			{
+				Alert($"Error: {e.Message}");
+			}
 		}
 
 	}

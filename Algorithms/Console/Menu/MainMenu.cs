@@ -62,36 +62,22 @@ namespace Console.Menu
 						break;
 
 					case 'h':
-						//create algorithm obj
-						var alg = new HungarianAlgorithm.HungarianAlgorithmForSquareProblem();
-						// create aggregator class
-						currentResolver = new AssignmentProblemResolver<SquareAssignmentProblem>(alg, problem as SquareAssignmentProblem);
-						//start algirithm
-						currentResolver.Resolve();
-						//output result
-						System.Console.WriteLine(currentResolver.ToString());
+						RunHungarianAlgorithm(ref currentResolver);
 						break;
 
 					case 'g':
-						//create algorithm obj
-						var algG = new GreedyAlgorithm.GreedyAlgorithm();
-						// create aggregator class
-						currentResolver = new AssignmentProblemResolver<SquareAssignmentProblem>(algG, problem as SquareAssignmentProblem);
-						//start algirithm
-						currentResolver.Resolve();
-						//output result
-						System.Console.WriteLine(currentResolver.ToString());
+						RunGreedyAlgorithm(ref currentResolver);
 						break;
 
 					case 't':
-						Info(" < Not implemented > ");
+						RunGeneticAlgorithm(ref currentResolver);
 						break;
 
 					case 'q':
 						break;
 
 					default:
-						WriteColorLine(" < Wrong mode > ", ConsoleColor.Red);
+						Alert(" < Wrong mode > ");
 						break;
 				}
 
@@ -99,5 +85,47 @@ namespace Console.Menu
 
 		}
 
+		private void RunGeneticAlgorithm(ref AssignmentProblemResolver<SquareAssignmentProblem> currentResolver)
+		{
+			//create algorithm obj
+			var algGen = new GeneticAlgorithm.GeneticAlgorithmForSquareProblem();
+			// create aggregator class
+			currentResolver = new AssignmentProblemResolver<SquareAssignmentProblem>(algGen, problem as SquareAssignmentProblem);
+			//start algirithm
+			try
+			{
+				currentResolver.Resolve();
+			}
+			catch (ArgumentException e)
+			{
+				Alert($"Error: {e.Message}");
+			}
+			//output result
+			System.Console.WriteLine(currentResolver.ToString());
+		}
+
+		private void RunGreedyAlgorithm(ref AssignmentProblemResolver<SquareAssignmentProblem> currentResolver)
+		{
+			//create algorithm obj
+			var algG = new GreedyAlgorithm.GreedyAlgorithm();
+			// create aggregator class
+			currentResolver = new AssignmentProblemResolver<SquareAssignmentProblem>(algG, problem as SquareAssignmentProblem);
+			//start algirithm
+			currentResolver.Resolve();
+			//output result
+			System.Console.WriteLine(currentResolver.ToString());
+		}
+
+		private void RunHungarianAlgorithm(ref AssignmentProblemResolver<SquareAssignmentProblem> currentResolver)
+		{
+			//create algorithm obj
+			var alg = new HungarianAlgorithm.HungarianAlgorithmForSquareProblem();
+			// create aggregator class
+			currentResolver = new AssignmentProblemResolver<SquareAssignmentProblem>(alg, problem as SquareAssignmentProblem);
+			//start algirithm
+			currentResolver.Resolve();
+			//output result
+			System.Console.WriteLine(currentResolver.ToString());
+		}
 	}
 }
