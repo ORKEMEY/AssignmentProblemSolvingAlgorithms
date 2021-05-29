@@ -25,7 +25,7 @@ namespace Infrastructure
 		/// <param name="Path"></param>
 		/// <exception cref="FileNotFoundException"></exception>
 		/// <returns></returns>
-		public async override Task<SquareAssignmentProblem> CreateAsync(string Path)
+		public async Task<SquareAssignmentProblem> CreateAsync(string Path)
 		{
 			AssignmentProblemDTO restoredProb;
 

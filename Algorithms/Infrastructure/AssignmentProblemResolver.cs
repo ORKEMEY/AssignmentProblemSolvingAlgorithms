@@ -40,7 +40,8 @@ namespace Infrastructure
 		{
 			if (Result == null) return "Result isn't feasible";
 	
-			string str = String.Empty;
+			string str = "Result as vector(index - task, value - worker): ";
+
 			foreach(var i in Result)
 			{
 				str += (i + 1).ToString() + " ";

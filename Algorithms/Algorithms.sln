@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneticAlgorithm", "Genetic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GreedyAlgorithm", "GreedyAlgorithm\GreedyAlgorithm.csproj", "{0EF98BF4-23FB-4CD7-8D37-8B0682428037}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{D0C22D1D-13BC-47C5-A367-9F1715980C9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{D0C22D1D-13BC-47C5-A367-9F1715980C9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HungarianAlgorithm", "HungarianAlgorithm\HungarianAlgorithm.csproj", "{28FD1D94-095D-4918-9B9D-15CD92E1A6B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HungarianAlgorithm", "HungarianAlgorithm\HungarianAlgorithm.csproj", "{28FD1D94-095D-4918-9B9D-15CD92E1A6B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{D1025FAC-3995-4994-9327-95D86E8FD63D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{28FD1D94-095D-4918-9B9D-15CD92E1A6B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28FD1D94-095D-4918-9B9D-15CD92E1A6B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28FD1D94-095D-4918-9B9D-15CD92E1A6B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1025FAC-3995-4994-9327-95D86E8FD63D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1025FAC-3995-4994-9327-95D86E8FD63D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1025FAC-3995-4994-9327-95D86E8FD63D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1025FAC-3995-4994-9327-95D86E8FD63D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
