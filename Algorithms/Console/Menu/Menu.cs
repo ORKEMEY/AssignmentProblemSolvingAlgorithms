@@ -16,6 +16,10 @@ namespace Console.Menu
 
 		public static void Alert(string str) =>
 			WriteColorLine(str, ConsoleColor.Red);
+
+		public static void Success(string str) =>
+			WriteColorLine(str, ConsoleColor.Green);
+
 		public static void WriteColorLine(string String, ConsoleColor Color)
 		{
 			System.Console.ForegroundColor = Color;

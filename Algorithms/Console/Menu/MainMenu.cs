@@ -11,7 +11,7 @@ namespace Console.Menu
 
 	public class MainMenu : Menu
 	{
-		private readonly AssignmentProblem problem;
+		private AssignmentProblem problem;
 
 		public MainMenu(AssignmentProblem problem)
 		{
@@ -22,11 +22,12 @@ namespace Console.Menu
 		{
 			System.Console.WriteLine(" < Menu > ");
 			System.Console.WriteLine(" < Enter \"o\" to output menu > ");
-			System.Console.WriteLine(" < Enter \"m\" to output matrices > ");
+			System.Console.WriteLine(" < Enter \"m\" to output current assignment problem > ");
 			System.Console.WriteLine(" < Enter \"s\" to open result submenu> ");
 			System.Console.WriteLine(" < Enter \"h\" to solve problem with hungarian algorithm > ");
 			System.Console.WriteLine(" < Enter \"g\" to solve problem with greedy algorithm > ");
 			System.Console.WriteLine(" < Enter \"t\" to solve problem with genetic algorithm > ");
+			System.Console.WriteLine(" < Enter \"r\" to open assignment problem submenu > ");
 			System.Console.WriteLine(" < Enter \"q\" to quit > ");
 			System.Console.WriteLine();
 		}
@@ -57,8 +58,8 @@ namespace Console.Menu
 							Info(" < No current result. Run one of the algorithms first and try again! > ");
 							break;
 						}
-						var sunbMenu = new ResultSubMenu(currentResolver);
-						sunbMenu.RunMenu();
+						var subMenu = new ResultSubMenu(currentResolver);
+						subMenu.RunMenu();
 						break;
 
 					case 'h':
@@ -71,6 +72,12 @@ namespace Console.Menu
 
 					case 't':
 						RunGeneticAlgorithm(ref currentResolver);
+						break;
+
+					case 'r':
+						var subMenuRP = new RandomMProblemMenu(problem);
+						subMenuRP.RunMenu();
+						problem = subMenuRP.currentProblem;
 						break;
 
 					case 'q':
