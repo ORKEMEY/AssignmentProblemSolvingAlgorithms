@@ -95,7 +95,6 @@ namespace Infrastructure
 		public virtual double? MutationProbability { get; set; }
 		public virtual int? GeneticAlgorithmsNumberOfIterations { get; set; }
 
-
 		public RandomAssignmentProblemBuilderOptions(int numberOfWorkers, int numberOfTasks, int expectedValC, int expectedValT)
 		{
 			this.NumberOfWorkers = numberOfWorkers;

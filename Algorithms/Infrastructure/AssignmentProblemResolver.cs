@@ -6,9 +6,9 @@ namespace Infrastructure
 	/// <summary>
 	/// Class aggregator for algorithm, task & result
 	/// </summary>
-	 
 	public class AssignmentProblemResolver<T> where T : AssignmentProblem
 	{
+		public event EventHandler<ProblemResolvedEventArgs> OnProblemResolved;
 
 		public readonly IAssignmentProblemSolvingAlgorithm<T> Algorythm;
 		public readonly T Problem;
@@ -27,22 +27,37 @@ namespace Infrastructure
 
 		public void Resolve()
 		{
+			DateTime start = DateTime.Now;
 			Result = Algorythm.Resolve(Problem);
+			TimeSpan totalTime = DateTime.Now - start;
 
 			if (Result == null) return;
 
 			ObjectiveValueByC = Problem.CalculateObjective(Problem.MatrixC.ToDouble(), Result);
 			ObjectiveValueByT = Problem.CalculateObjective(Problem.MatrixT.ToDouble(), Result);
 
+			if (ObjectiveValueByT.HasValue && ObjectiveValueByC.HasValue)
+			{
+
+				PerfectPoint point = new PerfectPoint(Problem);
+
+				var evArgs = new ProblemResolvedEventArgs()
+				{
+					TimeOfWork = (long)totalTime.TotalMilliseconds,
+					RelativeDistance = point.CalcRelativeDistanceToPerfectPoint(ObjectiveValueByC.Value, ObjectiveValueByT.Value)
+				};
+
+				OnProblemResolved?.Invoke(this, evArgs);
+			}
 		}
 
 		public override string ToString()
 		{
 			if (Result == null) return "Result isn't feasible";
-	
+
 			string str = "Result as vector(index - task, value - worker): ";
 
-			foreach(var i in Result)
+			foreach (var i in Result)
 			{
 				str += (i + 1).ToString() + " ";
 			}
@@ -59,7 +74,7 @@ namespace Infrastructure
 
 			matrixStr += $"{" |",4}";
 			for (int col = 0; col < Problem.MatrixC.GetLength(1); col++)
-					matrixStr += $"{(col + 1),-6}|";
+				matrixStr += $"{(col + 1),-6}|";
 			matrixStr += "\n----";
 			for (int col = 0; col < Problem.MatrixC.GetLength(1); col++)
 				matrixStr += $"-------";
@@ -69,13 +84,13 @@ namespace Infrastructure
 			{
 				matrixStr += $"{(row + 1),-3}|";
 
-				for (int col = 0; col < Problem.MatrixC.GetLength(1) ; col++)
+				for (int col = 0; col < Problem.MatrixC.GetLength(1); col++)
 				{
 					matrixStr += $"{(Result[row] == col ? 1 : 0),-6}|";
 				}
 				matrixStr += "\n";
 			}
-			
+
 			matrixStr += $"\nObjective value calculated by matrix C: {ObjectiveValueByC:F3}";
 			matrixStr += $"\nObjective value calculated by matrix T: {ObjectiveValueByT:F3}";
 			return matrixStr;
@@ -92,10 +107,10 @@ namespace Infrastructure
 				{
 					res[row, col] = (Result[row] == col ? 1 : 0);
 				}
-				
+
 			}
 
-			return new ResultDTO(res, objectiveValueByT: ObjectiveValueByT.Value, objectiveValueByC : ObjectiveValueByC.Value);
+			return new ResultDTO(res, objectiveValueByT: ObjectiveValueByT.Value, objectiveValueByC: ObjectiveValueByC.Value);
 		}
 
 		public void SaveResult(string path)
@@ -106,7 +121,16 @@ namespace Infrastructure
 
 			ResultWriter.WriteAsync(path, GetResult());
 		}
+	}
+	
 
+	public class ProblemResolvedEventArgs : EventArgs
+	{
+
+		public long TimeOfWork { get; set; }
+		public double RelativeDistance { get; set; }
+		public int GetRelativeDistanceInPercent => (int)(this.RelativeDistance * 100);
+		
 	}
 
 }

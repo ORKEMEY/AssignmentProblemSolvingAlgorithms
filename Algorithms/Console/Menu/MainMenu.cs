@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Infrastructure;
+using Tests;
 using GeneticAlgorithm;
 using GreedyAlgorithm;
 using HungarianAlgorithm;
@@ -23,10 +24,11 @@ namespace Console.Menu
 			System.Console.WriteLine(" < Menu > ");
 			System.Console.WriteLine(" < Enter \"o\" to output menu > ");
 			System.Console.WriteLine(" < Enter \"m\" to output current assignment problem > ");
-			System.Console.WriteLine(" < Enter \"s\" to open result submenu> ");
+			System.Console.WriteLine(" < Enter \"s\" to open result submenu > ");
+			System.Console.WriteLine(" < Enter \"t\" to run test > ");
 			System.Console.WriteLine(" < Enter \"h\" to solve problem with hungarian algorithm > ");
 			System.Console.WriteLine(" < Enter \"g\" to solve problem with greedy algorithm > ");
-			System.Console.WriteLine(" < Enter \"t\" to solve problem with genetic algorithm > ");
+			System.Console.WriteLine(" < Enter \"e\" to solve problem with genetic algorithm > ");
 			System.Console.WriteLine(" < Enter \"r\" to open assignment problem submenu > ");
 			System.Console.WriteLine(" < Enter \"q\" to quit > ");
 			System.Console.WriteLine();
@@ -70,12 +72,17 @@ namespace Console.Menu
 						RunGreedyAlgorithm(ref currentResolver);
 						break;
 
-					case 't':
+					case 'e':
 						RunGeneticAlgorithm(ref currentResolver);
 						break;
 
+					case 't':
+						new TestSubMenu().RunMenu();
+						break;
+
+						
 					case 'r':
-						var subMenuRP = new RandomMProblemMenu(problem);
+						var subMenuRP = new RandomProblemMenu(problem);
 						subMenuRP.RunMenu();
 						problem = subMenuRP.currentProblem;
 						break;

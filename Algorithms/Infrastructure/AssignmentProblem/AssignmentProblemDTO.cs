@@ -18,9 +18,9 @@ namespace Infrastructure
 		[JsonPropertyName("MatrixC")]
 		public int[][] MatrixC { get; set; }
 		[JsonPropertyName("MatrixT")]
-		public int[][] MatrixT { get; set; }	
+		public int[][] MatrixT { get; set; }
 
-		public AssignmentProblemDTO(int[][] matrixC, int[][] matrixT, double mutationProbability, int geneticAlgorithmsNumberOfIterations)
+		public AssignmentProblemDTO(int[][] matrixC, int[][] matrixT, double? mutationProbability, int? geneticAlgorithmsNumberOfIterations)
 		{
 			MatrixC = matrixC;
 			MatrixT = matrixT;
@@ -28,7 +28,7 @@ namespace Infrastructure
 			GeneticAlgorithmsNumberOfIterations = geneticAlgorithmsNumberOfIterations;
 		}
 
-		public AssignmentProblemDTO(int[,] matrixC, int[,] matrixT, double mutationProbability, int geneticAlgorithmsNumberOfIterations)
+		public AssignmentProblemDTO(int[,] matrixC, int[,] matrixT, double? mutationProbability, int? geneticAlgorithmsNumberOfIterations)
 		{
 			MatrixC = MatrixT = MatrixT = null;
 			MatrixC = matrixC.ToJaggedArray();
@@ -38,4 +38,27 @@ namespace Infrastructure
 		}
 
 	}
+
+	public struct TestResultsDTO
+	{
+		[JsonPropertyName("MutationProbability")]
+		public double? MutationProbability { get; set; }
+		[JsonPropertyName("GeneticAlgorithmsNumberOfIterations")]
+		public int? GeneticAlgorithmsNumberOfIterations { get; set; }
+		public long TimeOfWork { get; set; }
+		public double RelativeDistanceInPercents { get; set; }
+		public string TestOptions { get; set; }
+
+		public TestResultsDTO(double? mutationProbability, 
+			int? geneticAlgorithmsNumberOfIterations, long timeOfWork, double relativeDistanceInPercents, string testOptions) 	
+		{
+			MutationProbability = mutationProbability;
+			GeneticAlgorithmsNumberOfIterations = geneticAlgorithmsNumberOfIterations;
+			TimeOfWork = timeOfWork;
+			RelativeDistanceInPercents = relativeDistanceInPercents;
+			TestOptions = testOptions;
+		}
+
+	}
+
 }

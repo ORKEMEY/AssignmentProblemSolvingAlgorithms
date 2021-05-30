@@ -10,6 +10,7 @@
     <ProjectReference Include="..\GreedyAlgorithm\GreedyAlgorithm.csproj" />
     <ProjectReference Include="..\HungarianAlgorithm\HungarianAlgorithm.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\Tests\Tests.csproj" />
   </ItemGroup>
 
 </Project>
