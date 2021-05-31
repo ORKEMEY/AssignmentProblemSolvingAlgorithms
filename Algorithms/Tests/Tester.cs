@@ -1,11 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
 using Infrastructure;
-using System.Reflection;
-using System.Drawing;
 using System.Drawing.Text;
 
 namespace Tests
@@ -31,7 +26,8 @@ namespace Tests
 		public override string ToString()
 		{
 			return $"{NumberOfWorkers}/{ExpectedValC.ToString()[0]}," +
-				$"{HalfIntervalC.ToString()[0]}/{ExpectedValT.ToString()[0]},{HalfIntervalT.ToString()[0]}";
+				$"{HalfIntervalC.ToString()[0]}/{ExpectedValT.ToString()[0]},{HalfIntervalT.ToString()[0]}" +
+				$"/{(MutationProbability.HasValue ? MutationProbability : 0):f1}";
 		}
 
 		public object Clone()
@@ -64,6 +60,49 @@ namespace Tests
 
 		public abstract void Test();
 
+		protected int GetExpectedValueByParameter(Parameter param)
+		{
+			int value = 0;
+
+			switch (param)
+			{
+				case Parameter.Large:
+					value = 100;
+					break;
+
+				case Parameter.Middle:
+					value = 50;
+					break;
+
+				case Parameter.Small:
+					value = 10;
+					break;
+
+			}
+			return value;
+		}
+
+		protected float GetHalfIntervalByParameter(Parameter param)
+		{
+			float value = 0;
+
+			switch (param)
+			{
+				case Parameter.Large:
+					value = 0.5f;
+					break;
+
+				case Parameter.Middle:
+					value = 0.25f;
+					break;
+
+				case Parameter.Small:
+					value = 0.1f;
+					break;
+
+			}
+			return value;
+		}
 	}
 
 }

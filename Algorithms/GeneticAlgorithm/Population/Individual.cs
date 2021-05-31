@@ -125,5 +125,15 @@ namespace GeneticAlgorithm
 
 			return curDist;
 		}
+
+		public double CalcRelativeDistanceToPerfectPoint(PerfectPoint point, AssignmentProblem problem)
+		{
+			var distByC = problem.CalculateObjective(problem.MatrixC.ToDouble(), genes);
+			var distByT = problem.CalculateObjective(problem.MatrixT.ToDouble(), genes);
+			var curDist = point.CalcRelativeDistanceToPerfectPoint(coordinateC: distByC, coordinateT: distByT);
+
+			return curDist;
+		}
+
 	}
 }

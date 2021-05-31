@@ -130,7 +130,7 @@ namespace Console.Menu
 					ExpectedValT = ReadInteger(" < Enter expected value for matrix T > "),
 					HalfIntervalC = ReadInteger(" < Enter length of half-interval for matrix C values > "),
 					HalfIntervalT = ReadInteger(" < Enter length of half-interval for matrix T values > "),
-					MutationProbability = ReadDouble(" < Enter mutation probability for genetic algorithm (float number) > "),
+					MutationProbability = ReadDouble(" < Enter mutation probability for genetic algorithm (float number [0, 1]) > "),
 					GeneticAlgorithmsNumberOfIterations = ReadInteger(" < Enter number of iterations for genetic algorithm > ")
 
 				};
@@ -151,12 +151,17 @@ namespace Console.Menu
 		private void SaveProblem()
 		{
 			System.Console.Write("Enter path to the output file\n>");
-			string path = System.Console.ReadLine();
-			if (path == null)
+			string path = String.Empty;
+
+			do
 			{
-				Alert(" < Empty path to the output file > ");
-				return;
-			}
+				path = System.Console.ReadLine();
+				if (String.IsNullOrEmpty(path))
+				{
+					Alert(" < Empty path to the output file > ");
+					return;
+				}
+			} while (String.IsNullOrEmpty(path));
 			try
 			{
 				currentProblem.SaveProblem(path);

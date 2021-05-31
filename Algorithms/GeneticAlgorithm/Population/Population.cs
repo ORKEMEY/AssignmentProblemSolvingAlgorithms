@@ -30,9 +30,9 @@ namespace GeneticAlgorithm
 		/// <exception cref="ArgumentException"></exception>>
 		public Population(int sizeOfPopulation, int numberOfGenesOfIndividual)
 		{
-			if (sizeOfPopulation > Factorial(numberOfGenesOfIndividual))
+			if (numberOfGenesOfIndividual < 4 && sizeOfPopulation > Factorial(numberOfGenesOfIndividual))
 			{
-				throw new ArgumentException("Number of individuals in genetic algorithm's populaion cann't be larger than number of permutations of individual's genes");
+				throw new ArgumentException("Number of individuals(10) in genetic algorithm's populaion cann't be larger than number of permutations of individual's genes. Change size of problem");
 			}
 
 			static long Factorial(int numb)
@@ -76,11 +76,10 @@ namespace GeneticAlgorithm
 
 			double bestDist = double.MaxValue, curDist;
 			Individual best = null;
-			
 			foreach (var ind in idividuals)
 			{
+				
 				curDist = ind.CalcDistanceToPerfectPoint(point, problem);
-
 				if (curDist < bestDist)
 				{
 					bestDist = curDist;
@@ -135,7 +134,6 @@ namespace GeneticAlgorithm
 
 			var indComp = new IndividualComparer(point, problem);
 			Array.Sort(idividuals, indComp);
-
 			for (int count = 0; count < NumberOfIdividuals/2; count ++)
 			{
 				yield return idividuals[count];
@@ -151,7 +149,6 @@ namespace GeneticAlgorithm
 			for(int count = 0; count < descendants.Length; count++)
 			{
 				Array.Sort(idividuals, indComp);
-
 				var curDistWorst = idividuals[NumberOfIdividuals - 1].CalcDistanceToPerfectPoint(point, problem);
 				var curDistDescendant = descendants[count].CalcDistanceToPerfectPoint(point, problem);
 

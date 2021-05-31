@@ -156,9 +156,10 @@ namespace Infrastructure
 
 		public double CalcRelativeDistanceToPerfectPoint(double coordinateC, double coordinateT)
 		{
-			return Math.Sqrt(
-				Math.Pow(Math.Abs(CoordinateByC - coordinateC)/ CoordinateByC, 2) +
-				Math.Pow(Math.Abs(CoordinateByT - coordinateT)/ CoordinateByT, 2));
+			var distFromNull = CalcDistanceToPerfectPoint(0, 0);
+			var distFormCurPoint = CalcDistanceToPerfectPoint(coordinateC, coordinateT);
+
+			return (double)distFormCurPoint/distFromNull;
 		}
 
 	}

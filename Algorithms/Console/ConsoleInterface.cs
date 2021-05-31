@@ -28,9 +28,12 @@ namespace Console
 
 		public void Run(string pathToFileArg)
 		{
-			var problem = CreateSquareAssignmentProblemInstance(pathToFileArg);
+			SquareAssignmentProblem problem = null;
 
-			if (problem == null) return;
+			if (!String.IsNullOrEmpty(pathToFileArg))
+				problem = CreateSquareAssignmentProblemInstance(pathToFileArg);
+
+			//if (problem == null) return;
 
 			mainMenu = new MainMenu(problem);
 			mainMenu.RunMenu();

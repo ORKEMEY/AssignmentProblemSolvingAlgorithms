@@ -13,6 +13,7 @@ namespace GeneticAlgorithm
 		public Population Population { get; protected set; }
 		public PerfectPoint PerfectPoint { get; protected set; }
 		public SquareAssignmentProblem Problem { get; protected set; }
+		public event EventHandler<GeneticAlgEventArgs> OnIterationEnded;
 
 		/// <exception cref="ArgumentException"/>
 		public override int[] Resolve(SquareAssignmentProblem problem)
@@ -25,7 +26,7 @@ namespace GeneticAlgorithm
 			PerfectPoint = new PerfectPoint(problem);
 			Population = new Population(10, problem.Size);
 			Problem = problem;
-			
+			Individual bestCurrentInd;
 
 			for (int count = 0; count < problem.GeneticAlgorithmsNumberOfIterations; count++)
 			{
@@ -50,6 +51,13 @@ namespace GeneticAlgorithm
 
 				Population.Refresh(descendants, PerfectPoint, problem);
 
+				bestCurrentInd = Population.GetBestIndividual(PerfectPoint, problem);
+				OnIterationEnded?.Invoke(this, new GeneticAlgEventArgs
+				{
+					BestRelativeDistanceToPerfectPoint = bestCurrentInd.CalcRelativeDistanceToPerfectPoint(PerfectPoint, problem),
+					NumberOfIteration = count + 1
+
+				});
 			}
 
 			return Population.GetBestIndividual(PerfectPoint, problem).genes;
@@ -136,6 +144,13 @@ namespace GeneticAlgorithm
 			} while (initDist <= initDistAfterMutation && count < (Problem.Size * (Problem.Size - 1)) / 6); //one third of all possible permutations iterated
 		}
 
+	}
+
+	public class GeneticAlgEventArgs
+	{
+		public double BestRelativeDistanceToPerfectPoint { get; set; }
+		public int NumberOfIteration { get; set; }
+		public int BestRelativeDistanceToPerfectPointInPercent => (int)(BestRelativeDistanceToPerfectPoint * 100);
 	}
 
 }
