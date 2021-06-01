@@ -1,89 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using GeneticAlgorithm;
+using System.Text;
 using System.Drawing;
 using Infrastructure;
+using System.Linq;
+using GeneticAlgorithm;
 
 namespace Tests
 {
-	public class ChartPainter
+	public class MainChartPainter : ChartPainter
 	{
 
-		public List<AssignmentProblemResolver<SquareAssignmentProblem>> Resolvers { get; protected set; }
-		public List<ProblemResolvedEventArgs> Metrics { get; protected set; }
-		public List<TesterOptions> TesterOptions { get; set; }
-		//public List<GeneticAlgEventArgs> IterationMetrics { get; protected set; }
-		private int sizeX, sizeY, margin;
-
-		public ChartPainter(List<AssignmentProblemResolver<SquareAssignmentProblem>> resolvers, List<ProblemResolvedEventArgs> metrics, List<TesterOptions> testerOptions)
+		public MainChartPainter(List<AssignmentProblemResolver<SquareAssignmentProblem>> resolvers, List<ProblemResolvedEventArgs> metrics, List<TesterOptions> testerOptions)
+		: base(resolvers, metrics, testerOptions)
 		{
-			Resolvers = resolvers;
-			Metrics = metrics;
-			sizeX = 2000;
-			sizeY = 1024;
-			margin = 35;
-			TesterOptions = testerOptions;
 		}
 
-		public void DrawComparativeLineChartsByTime(string remark = "")
-		{
-			int maxTime = (int)Metrics.Max(x => x.TimeOfWork);
-			int minTime = (int)Metrics.Min(x => x.TimeOfWork);
-
-			int maxSize = Resolvers.Max(x => x.Problem.Size);
-			int minSize = Resolvers.Min(x => x.Problem.Size);
-
-			var graph = DrawSkeleton(out Image image, "Comparison of resolving problems by time", minSize, maxSize, minTime, maxTime, (Metrics.Count - 1));
-
-			graph.DrawString("ms",
-			new Font(new FontFamily("Arial Black"), 20, FontStyle.Regular),
-			Brushes.Blue, new PointF(2 , 2));
-
-			graph.DrawString("size",
-			new Font(new FontFamily("Arial Black"), 20, FontStyle.Regular),
-			Brushes.Blue, new PointF(sizeX - 100, sizeY - 2 * margin - 20));
-
-			DrawLinesForTimeComparison(graph);
-
-			image.Save($"{(String.IsNullOrEmpty(TesterOptions[0].Path) ? "last" : TesterOptions[0].Path)}.dimensional.time.comarison.png", System.Drawing.Imaging.ImageFormat.Png);
-
-		}
-
-		private void DrawLinesForTimeComparison(Graphics graph)
-		{
-			Pen pen = new Pen(Brushes.Black);
-			Pen penForLines = new Pen(Brushes.Red);
-			penForLines.Width = pen.Width = 3;
-
-			Point[] valPoints = new Point[Metrics.Count];
-
-			int maxDist = (int)Metrics.Max(x => x.TimeOfWork);
-			int minDist = (int)Metrics.Min(x => x.TimeOfWork);
-
-			int maxSize = Resolvers.Max(x => x.Problem.Size);
-			int minSize = Resolvers.Min(x => x.Problem.Size);
-
-			double scaleYStep = Math.Abs((double)(maxDist - minDist)) / 9;
-
-
-			int currrentX = margin, scaleXStepPxl = (int)(sizeX - 2 * margin) / (Metrics.Count - 1);
-
-			for (int count = 0; count < Metrics.Count; count++)
-			{
-				int curHeight = (int)((((double)Metrics[count].TimeOfWork - minDist + scaleYStep) / (maxDist - minDist + scaleYStep)) * (sizeY - 2 * margin));
-
-				if (currrentX + (count * scaleXStepPxl) < sizeX - margin)
-					valPoints[count] = new Point(currrentX + (count * scaleXStepPxl), sizeY - margin - curHeight);
-				else
-					valPoints[count] = new Point(sizeX - margin, sizeY - margin - curHeight);
-			}
-
-			graph.DrawLines(penForLines, valPoints);
-		}
-
-		public void DrawChartsAccuracyByIterations(List<GeneticAlgEventArgs> iterationMetrics, TesterOptions testerOptions,  string fileName = "")
+		public void DrawChartsAccuracyByIterations(List<GeneticAlgEventArgs> iterationMetrics, TesterOptions testerOptions)
 		{
 			int maxDist = (int)iterationMetrics.Max(x => x.BestRelativeDistanceToPerfectPointInPercent);
 			int minDist = (int)iterationMetrics.Min(x => x.BestRelativeDistanceToPerfectPointInPercent);
@@ -91,15 +24,23 @@ namespace Tests
 			int maxIteration = (int)iterationMetrics.Max(x => x.NumberOfIteration);
 			int minIteration = (int)iterationMetrics.Min(x => x.NumberOfIteration);
 
-			var graph = DrawSkeleton(out Image image, "Comparison by relative distance to perfect point on each iteration", minIteration, maxIteration,  minDist, maxDist);
+			var graph = DrawSkeleton(out Image image, "Comparison by relative distance to perfect point on each iteration", minIteration, maxIteration, minDist, maxDist);
 
 			graph.DrawString($"{testerOptions}",
 			new Font(new FontFamily("Arial Black"), 20, FontStyle.Regular),
 			Brushes.Blue, new PointF(sizeX - 350, 2));
 
+			graph.DrawString("%",
+			new Font(new FontFamily("Arial Black"), 20, FontStyle.Regular),
+			Brushes.Blue, new PointF(2, 2));
+
+			graph.DrawString("№",
+			new Font(new FontFamily("Arial Black"), 20, FontStyle.Regular),
+			Brushes.Blue, new PointF(sizeX - 70, sizeY - 2 * margin - 20));
+
 			DrawLinesForAccuracyComparison(graph, iterationMetrics);
 
-			image.Save($"{(String.IsNullOrEmpty(TesterOptions[0].Path) ? "last" : TesterOptions[0].Path)}.{fileName}.iteration.accuracy.comarison.png", System.Drawing.Imaging.ImageFormat.Png);
+			image.Save($"{(String.IsNullOrEmpty(TesterOptions[0].Path) ? "last" : TesterOptions[0].Path)}.{testerOptions.ToStringWithoutSlash()}.iteration.accuracy.comarison.png", System.Drawing.Imaging.ImageFormat.Png);
 
 		}
 
@@ -119,15 +60,15 @@ namespace Tests
 
 			double scaleYStep = Math.Abs((double)(maxDist - minDist)) / 9;
 
-			
-			int currrentX = margin, scaleXStepPxl =(int)Math.Round((decimal)(sizeX - 2 * margin) / Math.Abs((maxIteration - minIteration)));
+
+			int currrentX = margin, scaleXStepPxl = (int)Math.Round((decimal)(sizeX - 2 * margin) / Math.Abs((maxIteration - minIteration)));
 
 			for (int count = 0; count < valPoints.Length; count++)
 			{
 				int curHeight = (int)((((double)iterationMetrics[count].BestRelativeDistanceToPerfectPointInPercent - minDist + scaleYStep) / (maxDist - minDist + scaleYStep)) * (sizeY - 2 * margin));
-				
+
 				if (currrentX + (count * scaleXStepPxl) < sizeX - margin)
-					valPoints[count] = new Point(currrentX + (count * scaleXStepPxl), sizeY -  margin - curHeight);
+					valPoints[count] = new Point(currrentX + (count * scaleXStepPxl), sizeY - margin - curHeight);
 				else
 					valPoints[count] = new Point(sizeX - margin, sizeY - margin - curHeight);
 			}
@@ -155,6 +96,10 @@ namespace Tests
 			graph.DrawString(remark,
 			new Font(new FontFamily("Arial Black"), 20, FontStyle.Regular),
 			Brushes.Blue, new PointF(margin, sizeY - margin));
+
+			graph.DrawString("%",
+			new Font(new FontFamily("Arial Black"), 20, FontStyle.Regular),
+			Brushes.Blue, new PointF(2, 2));
 
 			DrawRectsForAccuracyComparison(graph);
 
@@ -225,9 +170,13 @@ namespace Tests
 			new Font(new FontFamily("Arial Black"), 20, FontStyle.Regular),
 			Brushes.Blue, new PointF(sizeX - 250, sizeY - margin));
 
-			graph.DrawString(remark,
+			/*graph.DrawString(remark,
 			new Font(new FontFamily("Arial Black"), 20, FontStyle.Regular),
-			Brushes.Blue, new PointF(margin, sizeY - margin));
+			Brushes.Blue, new PointF(margin, sizeY - margin));*/
+
+			graph.DrawString("ms",
+			new Font(new FontFamily("Arial Black"), 20, FontStyle.Regular),
+			Brushes.Blue, new PointF(2, 2));
 
 			DrawRectsForTimeComparison(graph);
 
@@ -309,56 +258,10 @@ namespace Tests
 
 			graph.DrawString(title,
 			new Font(new FontFamily("Arial Black"), 20, FontStyle.Bold),
-			Brushes.Blue, new PointF(sizeX - margin, margin), new StringFormat(StringFormatFlags.DirectionVertical));
+			Brushes.Blue, new PointF(sizeX - 2 * margin, margin), new StringFormat(StringFormatFlags.DirectionVertical));
 
 			return graph;
 
 		}
-
-		private Graphics DrawSkeleton(out Image image, string title, int minScaleXDiv = 0, int maxScaleXDiv = 10, int minScaleYDiv = 0, int maxScaleYDiv = 10, int numberOfMarksX = 25)
-		{
-
-			image = new Bitmap(sizeX, sizeY);
-
-			Graphics graph = Graphics.FromImage(image);
-
-			graph.Clear(Color.Azure);
-
-			Pen pen = new Pen(Brushes.Black);
-			pen.Width = 3;
-
-			graph.DrawLines(pen, new Point[] { new Point(margin, margin), new Point(margin, sizeY - margin) });
-			graph.DrawLines(pen, new Point[] { new Point(sizeX - margin, sizeY - margin), new Point(margin, sizeY - margin) });
-
-
-			int scaleXStep = (int)Math.Round(((decimal)Math.Abs(maxScaleXDiv - minScaleXDiv) / numberOfMarksX));
-			
-			int scaleXStepPxl = (sizeX - 2 * margin) / numberOfMarksX;
-			double scaleXCount = minScaleXDiv + scaleXStep;
-			for (int count = scaleXStepPxl; count < sizeX - margin; count += scaleXStepPxl, scaleXCount += scaleXStep)
-			{
-				graph.DrawLines(pen, new Point[] { new Point(margin + count, sizeY - margin - 5), new Point(margin + count, sizeY - margin + 5) });
-				graph.DrawString($"{(int)scaleXCount}", new Font(new FontFamily("Centaur"), 15, FontStyle.Bold),
-					Brushes.Black, new PointF(margin + count, sizeY - margin + 10));
-			}
-
-			int scaleYStepPxl = (sizeY - 2 * margin) / 10;
-			double scaleYStep = Math.Abs((double)(maxScaleYDiv - minScaleYDiv)) / 9;
-			double scaleYCount = minScaleYDiv;
-			for (int count = scaleYStepPxl; count < sizeY - margin; count += scaleYStepPxl, scaleYCount += scaleYStep)
-			{
-				graph.DrawLines(pen, new Point[] { new Point(margin - 5, sizeY - margin - count), new Point(margin + 5, sizeY - margin - count) });
-				graph.DrawString($"{scaleYCount:F1}", new Font(new FontFamily("Centaur"), 15, FontStyle.Bold),
-					Brushes.Black, new PointF(0, sizeY - margin - count), new StringFormat(StringFormatFlags.DirectionVertical));
-			}
-
-			graph.DrawString(title,
-			new Font(new FontFamily("Arial Black"), 20, FontStyle.Bold),
-			Brushes.Blue, new PointF(2 *margin, 2));
-
-			return graph;
-
-		}
-
 	}
 }

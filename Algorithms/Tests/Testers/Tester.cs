@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Infrastructure;
 using System.Drawing.Text;
@@ -30,6 +31,20 @@ namespace Tests
 				$"/{(MutationProbability.HasValue ? MutationProbability : 0):f1}";
 		}
 
+		public string ToStringWithoutSize()
+		{
+			return $"/{ExpectedValC.ToString()[0]}," +
+				$"{HalfIntervalC.ToString()[0]}/{ExpectedValT.ToString()[0]},{HalfIntervalT.ToString()[0]}" +
+				$"/{(MutationProbability.HasValue ? MutationProbability : 0):f1}";
+		}
+
+		public string ToStringWithoutSlash()
+		{
+			return $"{NumberOfWorkers}-{ExpectedValC.ToString()[0]}," +
+				$"{HalfIntervalC.ToString()[0]}-{ExpectedValT.ToString()[0]},{HalfIntervalT.ToString()[0]}" +
+				$"-{(MutationProbability.HasValue ? MutationProbability : 0):f1}";
+		}
+
 		public object Clone()
 		{
 			return new TesterOptions()
@@ -52,10 +67,16 @@ namespace Tests
 	public abstract class Tester<T> where T : AssignmentProblem
 	{
 		protected readonly TesterOptions options;
+		public List<AssignmentProblemResolver<T>> Resolvers { get; protected set; }
+		public List<ProblemResolvedEventArgs> Metrics { get; protected set; }
+		public List<TesterOptions> TesterOptions { get; protected set; }
 
 		protected Tester(TesterOptions options)
 		{
 			this.options = options;
+			Resolvers = new List<AssignmentProblemResolver<T>>();
+			Metrics = new List<ProblemResolvedEventArgs>();
+			TesterOptions = new List<TesterOptions>();
 		}
 
 		public abstract void Test();

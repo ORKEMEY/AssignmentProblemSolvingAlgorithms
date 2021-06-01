@@ -3,24 +3,17 @@ using System.Collections.Generic;
 using System.Text;
 using Infrastructure;
 using System.Reflection;
-using GeneticAlgorithm;
 
 namespace Tests
 {
-	public class GeneticAlgorithmBySquareAssignmentProblemTester : Tester<SquareAssignmentProblem>
+	public class HungarianAlgorithmBySquareAssignmentProblemTester : Tester<SquareAssignmentProblem>
 	{
 
-		public List<AssignmentProblemResolver<SquareAssignmentProblem>> Resolvers { get; protected set; }
-		public List<ProblemResolvedEventArgs> Metrics { get; protected set; }
-		public List<TesterOptions> TesterOptions { get; protected set; }
-		public List<GeneticAlgEventArgs> IterationMetrics { get; protected set; }
-
-		public GeneticAlgorithmBySquareAssignmentProblemTester(TesterOptions options) : base(options)
+		public HungarianAlgorithmBySquareAssignmentProblemTester(TesterOptions options) : base(options)
 		{
 			Resolvers = new List<AssignmentProblemResolver<SquareAssignmentProblem>>();
 			Metrics = new List<ProblemResolvedEventArgs>();
 			TesterOptions = new List<TesterOptions>();
-			IterationMetrics = new List<GeneticAlgEventArgs>();
 		}
 
 		/// <exception cref="ArgumentException"/>
@@ -28,7 +21,7 @@ namespace Tests
 		public override void Test()
 		{
 			var arrEnum = Enum.GetValues(typeof(Parameter));
-			options.GeneticAlgorithmsNumberOfIterations = 500;
+
 			Type optionsType = options.GetType();
 			PropertyInfo varyingProp;
 			try
@@ -58,28 +51,17 @@ namespace Tests
 				{
 					varyingProp.SetValue(options, (Parameter)param);
 					Run(options);
-
 				}
 			}
-			else if (varyingProp.PropertyType == typeof(double?) &&
-				varyingProp.Name == nameof(options.MutationProbability))
-			{
 
-				for (double count = 0.2; count <= 0.7; count += 0.1)
-				{
-					options.MutationProbability = count;
-					Run(options);
-				}
-
-			}
-
-			var paintor = new ChartPainter(Resolvers, Metrics, TesterOptions);
-			paintor.DrawComparativeChartsByTime(varyingProp.Name == nameof(options.MutationProbability) ? "0,2 to 0,7 step 0,1" : String.Empty);
-			paintor.DrawComparativeChartsByAccuracy(varyingProp.Name == nameof(options.MutationProbability) ? "0,2 to 0,7 step 0,1" : String.Empty);
+			var paintor = new MainChartPainter(Resolvers, Metrics, TesterOptions);
+			paintor.DrawComparativeChartsByTime();
+			paintor.DrawComparativeChartsByAccuracy();
 			Resolvers.Clear();
 			Metrics.Clear();
 			TesterOptions.Clear();
 		}
+
 
 		/// <exception cref="ArgumentException"/>
 		public void Run(TesterOptions testerOptions)
@@ -91,13 +73,7 @@ namespace Tests
 			var problem = builder.Create();
 
 			//create algorithm obj
-			var alg = new GeneticAlgorithm.GeneticAlgorithmForSquareProblem();
-
-			alg.OnIterationEnded += (obj, args) =>
-			{
-				IterationMetrics.Add(args as GeneticAlgEventArgs);
-			};
-
+			var alg = new HungarianAlgorithm.HungarianAlgorithmForSquareProblem();
 			// create aggregator class
 			var currentResolver = new AssignmentProblemResolver<SquareAssignmentProblem>(alg, problem);
 
@@ -106,15 +82,13 @@ namespace Tests
 				Resolvers.Add(currentResolver);
 				Metrics.Add(args);
 				TesterOptions.Add(testerOptions.Clone() as TesterOptions);
-				AssignmentProblemWriter.Write($"{(String.IsNullOrEmpty(testerOptions.Path) ? "last" : testerOptions.Path)}.genetic.test.result.json", problem, args, testerOptions.ToString());
+				AssignmentProblemWriter.Write($"{(String.IsNullOrEmpty(testerOptions.Path) ? "last" : testerOptions.Path)}.hungarian.test.result.json", problem, args, testerOptions.ToString());
 			};
 
 			//start algirithm
 			currentResolver.Resolve();
 			//output result
-			var paintor = new ChartPainter(Resolvers, Metrics, TesterOptions);
-			paintor.DrawChartsAccuracyByIterations(IterationMetrics, testerOptions, $"{Metrics.Count}");
-			IterationMetrics.Clear();
+
 			System.Console.WriteLine(problem.ToString());
 			System.Console.WriteLine(currentResolver.ToString());
 		}
@@ -133,8 +107,8 @@ namespace Tests
 				* GetHalfIntervalByParameter(testerOptions.HalfIntervalC)),
 				HalfIntervalT = (int)(GetExpectedValueByParameter(testerOptions.ExpectedValT)
 				* GetHalfIntervalByParameter(testerOptions.HalfIntervalT)),
-				MutationProbability = testerOptions.MutationProbability,
-				GeneticAlgorithmsNumberOfIterations = testerOptions.GeneticAlgorithmsNumberOfIterations
+				/*MutationProbability,
+				GeneticAlgorithmsNumberOfIterations*/
 
 			};
 
@@ -142,4 +116,6 @@ namespace Tests
 		}
 
 	}
+
+
 }
